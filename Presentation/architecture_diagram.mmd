@@ -1,0 +1,52 @@
+flowchart TD
+    subgraph Data_Layer ["Data & Ingestion Layer"]
+        I1["📊 COA Real-Time Train Feed"]
+        I2["⚙️ TMS / SMMS / TDMS Task APIs"]
+        D1[("🗄️ SQLite / PostgreSQL<br>(WAL Mode Enabled)")]
+    end
+
+    subgraph Backend_Layer ["FastAPI Service Layer"]
+        API["⚡ FastAPI Async REST API"]
+        SCORER["⚖️ Priority Scorer Engine"]
+        COLLISION["🛡️ Spatial-Temporal Conflict Detector"]
+    end
+
+    subgraph Optimization_Engine ["Constraint Programming Engine"]
+        CPSAT["🧩 Google OR-Tools CP-SAT Solver"]
+        HC["🔒 Hard Constraints Validator<br>• NoOverlap (Machines & Tracks)<br>• Zero Train-Block Collision"]
+        SC["✨ Soft Constraints & Objective<br>• Maximize High-Priority Completion<br>• Shadow Block Bonus"]
+    end
+
+    subgraph Presentation_Layer ["Presentation & Dispatch Layer"]
+        UI1["📈 D3.js Stringline (Marey) Chart"]
+        UI2["📅 Weekly Block Calendar & Gantt"]
+        UI3["📄 Auto-Generated Form 351 PTW Notice"]
+    end
+
+    I1 & I2 --> D1
+    D1 --> API
+    API --> SCORER & COLLISION
+    API --> UI1
+    API --> UI3
+    SCORER & COLLISION --> CPSAT
+    CPSAT --> HC & SC
+    HC & SC --> CPSAT
+    CPSAT --> UI2
+    CPSAT --> API
+
+    style Data_Layer fill:#f8fafc,stroke:#334155,stroke-width:2px,color:#0f172a
+    style Backend_Layer fill:#f8fafc,stroke:#334155,stroke-width:2px,color:#0f172a
+    style Optimization_Engine fill:#f8fafc,stroke:#334155,stroke-width:2px,color:#0f172a
+    style Presentation_Layer fill:#f8fafc,stroke:#334155,stroke-width:2px,color:#0f172a
+    style I1 fill:#1e293b,stroke:#0284c7,stroke-width:1.5px,color:#fff
+    style I2 fill:#1e293b,stroke:#0284c7,stroke-width:1.5px,color:#fff
+    style D1 fill:#0284c7,stroke:#0369a1,stroke-width:1.5px,color:#fff
+    style API fill:#1e293b,stroke:#0f172a,stroke-width:2px,color:#fff
+    style SCORER fill:#1e293b,stroke:#0f172a,stroke-width:1.5px,color:#fff
+    style COLLISION fill:#1e293b,stroke:#0f172a,stroke-width:1.5px,color:#fff
+    style CPSAT fill:#1e293b,stroke:#2563eb,stroke-width:2px,color:#fff
+    style HC fill:#1e293b,stroke:#334155,stroke-width:1.5px,color:#fff
+    style SC fill:#1e293b,stroke:#334155,stroke-width:1.5px,color:#fff
+    style UI1 fill:#1e293b,stroke:#ea580c,stroke-width:1.5px,color:#fff
+    style UI2 fill:#1e293b,stroke:#334155,stroke-width:1.5px,color:#fff
+    style UI3 fill:#1e293b,stroke:#334155,stroke-width:1.5px,color:#fff

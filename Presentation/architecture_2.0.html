@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Architecture 2.0 - Transparent Canvas</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      /* Checkerboard pattern to show transparency */
+      background-color: #1e293b;
+      background-image: 
+        linear-gradient(45deg, #0f172a 25%, transparent 25%), 
+        linear-gradient(-45deg, #0f172a 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #0f172a 75%), 
+        linear-gradient(-45deg, transparent 75%, #0f172a 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      color: #f0f6fc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .toolbar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      background: #0f172a;
+      padding: 12px 24px;
+      border-radius: 30px;
+      border: 1px solid #334155;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    
+    .btn {
+      background: #0284c7;
+      color: #ffffff;
+      border: none;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn:hover { background: #0369a1; transform: translateY(-1px); }
+    .btn-secondary { background: #334155; color: #e2e8f0; }
+    .btn-secondary:hover { background: #475569; }
+
+    .canvas-container {
+      position: relative;
+      width: 1100px;
+      height: 650px;
+      background: transparent; /* 100% Transparent background */
+      border: 1px dashed rgba(148, 163, 184, 0.4);
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <button class="btn" onclick="downloadTransparentSVG()">
+      ⬇️ Download Transparent SVG (Vector for PowerPoint)
+    </button>
+    <button class="btn btn-secondary" onclick="downloadTransparentPNG()">
+      ⬇️ Download Transparent PNG
+    </button>
+  </div>
+
+  <div class="canvas-container" id="svgWrapper">
+    <!-- Inline Standalone Vector SVG -->
+    <svg id="mainSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 650" width="100%" height="100%">
+      <defs>
+        <style>
+          .layer-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13px; fill: #e6edf3; font-weight: 600; }
+          .node-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11.5px; fill: #f0f6fc; font-weight: 500; }
+          .node-subtext { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 9.5px; fill: #e2e8f0; }
+          .bullet-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 10px; fill: #cbd5e1; }
+          .arrow { stroke: #388bfd; stroke-width: 1.8; fill: none; }
+          .arrow-head { fill: #388bfd; }
+        </style>
+        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 8 5 L 0 9 z" class="arrow-head" />
+        </marker>
+        <linearGradient id="dbGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1f6feb"/>
+          <stop offset="100%" stop-color="#0d419d"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Train Graphic Outside Top Left of Data Layer -->
+      <text x="220" y="90" font-size="20">🚋 🚆 🚂</text>
+
+      <!-- 1. Data & Ingestion Layer -->
+      <g id="layer-data">
+        <rect x="310" y="25" width="480" height="200" rx="3" fill="#0d1117" fill-opacity="0.9" stroke="#8b949e" stroke-width="1.2"/>
+        <text x="325" y="48" class="layer-title">Data &amp; Ingestion Layer</text>
+        
+        <!-- COA Feed Node -->
+        <rect x="325" y="65" width="215" height="44" rx="4" fill="#0b1329" stroke="#388bfd" stroke-width="1.5"/>
+        <text x="340" y="92" class="node-text">📊 COA Real-Time Train Feed</text>
+
+        <!-- TMS Node -->
+        <rect x="560" y="65" width="215" height="44" rx="4" fill="#0b1329" stroke="#388bfd" stroke-width="1.5"/>
+        <text x="575" y="92" class="node-text">⚙️ TMS / SMMS / TDMS Task APIs</text>
+
+        <!-- Database Cylinder Node -->
+        <rect x="420" y="140" width="260" height="60" rx="15" fill="url(#dbGrad)" stroke="#58a6ff" stroke-width="2"/>
+        <text x="440" y="170" font-size="18">🪶</text>
+        <text x="475" y="167" class="node-text" font-weight="700" fill="#ffffff">SQLite / PostgreSQL</text>
+        <text x="475" y="183" class="node-subtext">(WAL Mode Enabled)</text>
+        <text x="645" y="172" font-size="18">🐘</text>
+      </g>
+
+      <!-- 2. FastAPI Service Layer -->
+      <g id="layer-fastapi">
+        <rect x="450" y="280" width="420" height="175" rx="3" fill="#0d1117" fill-opacity="0.9" stroke="#8b949e" stroke-width="1.2"/>
+        <text x="465" y="303" class="layer-title">FastAPI Service Layer</text>
+
+        <!-- FastAPI Node -->
+        <rect x="470" y="315" width="200" height="40" rx="4" fill="#04260f" stroke="#238636" stroke-width="1.8"/>
+        <text x="485" y="340" class="node-text" fill="#ffffff">⚡ FastAPI Async REST API</text>
+
+        <!-- Scorer Node -->
+        <rect x="520" y="375" width="150" height="42" rx="4" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+        <text x="535" y="401" class="node-text">Priority Scorer Engine</text>
+
+        <!-- Conflict Detector Node -->
+        <rect x="685" y="375" width="170" height="42" rx="4" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+        <text x="695" y="401" class="node-text">Spatial-Temporal Conflict Detector</text>
+      </g>
+
+      <!-- 3. Presentation & Dispatch Layer -->
+      <g id="layer-presentation">
+        <rect x="20" y="480" width="590" height="90" rx="3" fill="#0d1117" fill-opacity="0.9" stroke="#8b949e" stroke-width="1.2"/>
+        <text x="35" y="503" class="layer-title">Presentation &amp; Dispatch Layer</text>
+
+        <!-- D3 Node -->
+        <rect x="32" y="515" width="175" height="42" rx="4" fill="#0d1117" stroke="#f78166" stroke-width="1.5"/>
+        <text x="42" y="541" class="node-text">🟠 D3.js Stringline (Marey) Chart</text>
+
+        <!-- Calendar Node -->
+        <rect x="217" y="515" width="185" height="42" rx="4" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+        <text x="227" y="541" class="node-text">📅 Weekly Block Calendar &amp; Gantt</text>
+
+        <!-- PTW Node -->
+        <rect x="412" y="515" width="190" height="42" rx="4" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+        <text x="422" y="541" class="node-text">📄 Auto-Generated Form 351 PTW Notice</text>
+      </g>
+
+      <!-- 4. Constraint Programming Engine -->
+      <g id="layer-engine">
+        <rect x="630" y="480" width="440" height="145" rx="3" fill="#0d1117" fill-opacity="0.9" stroke="#8b949e" stroke-width="1.2"/>
+        <text x="645" y="503" class="layer-title">Constraint Programming Engine</text>
+
+        <!-- CP-SAT Solver Node -->
+        <rect x="685" y="510" width="330" height="38" rx="4" fill="#0d1117" stroke="#388bfd" stroke-width="1.8"/>
+        <text x="735" y="534" class="node-text" fill="#58a6ff" font-weight="600">🧩 Google OR-Tools CP-SAT Solver</text>
+
+        <!-- Hard Constraints Node -->
+        <rect x="645" y="558" width="195" height="55" rx="4" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+        <text x="655" y="575" class="bullet-text" fill="#58a6ff" font-weight="600">Hard Constraints Validator</text>
+        <text x="655" y="590" class="bullet-text">• NoOverlap (Machines &amp; Tracks)</text>
+        <text x="655" y="605" class="bullet-text" fill="#3fb950" font-weight="600">• Zero Train-Block Collision</text>
+
+        <!-- Soft Constraints Node -->
+        <rect x="860" y="558" width="195" height="55" rx="4" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+        <text x="870" y="575" class="bullet-text" fill="#d2a8ff" font-weight="600">Soft Constraints &amp; Objective</text>
+        <text x="870" y="590" class="bullet-text">• Maximize High-Priority Completion</text>
+        <text x="870" y="605" class="bullet-text">• Shadow Block Bonus</text>
+      </g>
+
+      <!-- Connectors -->
+      <g class="arrows">
+        <path d="M 432 109 L 432 125 L 550 125 L 550 138" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 667 109 L 667 125 L 550 125 L 550 138" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 550 200 L 550 315 L 470 315" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 570 355 L 570 375 L 595 375" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 570 355 L 570 375 L 755 375" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 470 335 L 110 335 L 110 513" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 470 335 L 305 335 L 305 513" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 505 355 L 505 513" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 770 417 L 770 508" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 595 417 L 595 450 L 770 450" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 742 548 L 742 556" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 957 548 L 957 556" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 645 565 L 305 565 L 305 558" class="arrow" marker-end="url(#arrow)"/>
+        <path d="M 950 558 L 1050 558 L 1050 250 L 590 250 L 590 280" class="arrow" marker-end="url(#arrow)"/>
+      </g>
+    </svg>
+  </div>
+
+  <script>
+    function downloadTransparentSVG() {
+      const svgData = document.getElementById("mainSvg").outerHTML;
+      const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "architecture_2.0_transparent.svg";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function downloadTransparentPNG() {
+      const svgElement = document.getElementById("mainSvg");
+      const svgString = new XMLSerializer().serializeToString(svgElement);
+      const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+      const URL_ = window.URL || window.webkitURL || window;
+      const blobURL = URL_.createObjectURL(svgBlob);
+      
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = 2200; // High resolution (2x)
+        canvas.height = 1300;
+        const context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height); // Ensures 100% transparent canvas
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        
+        const png = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.download = "architecture_2.0_transparent.png";
+        link.href = png;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      image.src = blobURL;
+    }
+  </script>
+
+</body>
+</html>

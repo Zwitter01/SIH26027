@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: transparent !important;
+      width: 1920px;
+      height: 1080px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .slide-container {
+      width: 1920px;
+      height: 1080px;
+      padding: 40px 60px;
+      display: flex;
+      gap: 60px;
+      background: transparent !important;
+    }
+
+    .col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .section-block {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-icon {
+      font-size: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .header-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a; /* High contrast dark text for light slide */
+      letter-spacing: -0.3px;
+    }
+
+    .point-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-left: 6px;
+    }
+
+    .point-item {
+      font-size: 15.5px;
+      line-height: 1.45;
+      color: #1e293b;
+    }
+
+    .point-bold {
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* Highlight Card on Bottom Right */
+    .highlight-card {
+      margin-top: 5px;
+      background: #f8fafc;
+      border: 2px solid #0284c7;
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.08);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #0369a1;
+      margin-bottom: 12px;
+    }
+
+    .card-point {
+      font-size: 14px;
+      line-height: 1.45;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .card-point:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slide-container">
+    
+    <!-- LEFT COLUMN -->
+    <div class="col">
+      
+      <!-- 1. Feasibility -->
+      <div class="section-block">
+        <div class="header-row">
+          <div class="header-icon">⚖️</div>
+          <div class="header-title">Feasibility:</div>
+        </div>
+        <ul class="point-list">
+          <li class="point-item"><span class="point-bold">1. Technical:</span> Powered by Google OR-Tools CP-SAT constraint solver running in &lt;0.06s with sub-100ms latency.</li>
+          <li class="point-item"><span class="point-bold">2. Modularisation:</span> Layered architecture enables phased rollout from 131 km pilot to national scale.</li>
+          <li class="point-item"><span class="point-bold">3. Integration:</span> Non-invasive REST API/webhook integration with existing CRIS, TMS, SMMS, and COA servers.</li>
+          <li class="point-item"><span class="point-bold">4. Economic:</span> Zero specialized hardware required; runs on existing Indian Railways cloud infrastructure.</li>
+        </ul>
+      </div>
+
+      <!-- 2. Viability -->
+      <div class="section-block">
+        <div class="header-row">
+          <div class="header-icon">⚙️</div>
+          <div class="header-title">Viability:</div>
+        </div>
+        <ul class="point-list">
+          <li class="point-item"><span class="point-bold">1. Regulatory Compliance:</span> Built strictly around Indian Railways G&amp;SR Rules and Block Manuals.</li>
+          <li class="point-item"><span class="point-bold">2. Standardized PTW:</span> Auto-generates statutory Form 351 Joint Disconnection Notices with 3-dept sign-offs.</li>
+          <li class="point-item"><span class="point-bold">3. High Scalability:</span> Extensible across all 17 Zonal Railways and 68,000+ route kilometers.</li>
+          <li class="point-item"><span class="point-bold">4. Operational Safety:</span> Mathematical guarantee of zero train-block collisions eliminates human error.</li>
+        </ul>
+      </div>
+
+      <!-- 3. Challenges & Mitigations -->
+      <div class="section-block">
+        <div class="header-row">
+          <div class="header-icon">⚠️</div>
+          <div class="header-title">Challenges &amp; Mitigations:</div>
+        </div>
+        <ul class="point-list">
+          <li class="point-item"><span class="point-bold">1. Data Inconsistency:</span> Pydantic schemas sanitize field timestamps, chainage markers, and defect logs.</li>
+          <li class="point-item"><span class="point-bold">2. Machine Conflicts:</span> NoOverlap logic prevents double-booking scarce Track Machines and Tower Wagons.</li>
+          <li class="point-item"><span class="point-bold">3. Emergency Disruptions:</span> Dynamic What-If engine reschedules around urgent rail flaws in &lt;150ms.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col">
+      
+      <!-- 4. Use Cases -->
+      <div class="section-block">
+        <div class="header-row">
+          <div class="header-icon">🚆</div>
+          <div class="header-title">Use Cases:</div>
+        </div>
+        <ul class="point-list">
+          <li class="point-item"><span class="point-bold">1. Section Controllers:</span> Automated corridor block windows without manual phone coordination.</li>
+          <li class="point-item"><span class="point-bold">2. Civil / P-Way (TMS):</span> Prioritizes urgent IMR rail flaw welds and deep screening tamping blocks.</li>
+          <li class="point-item"><span class="point-bold">3. Traction (TDMS):</span> Synchronizes OHE cantilever overhauls and power isolation with track closures.</li>
+          <li class="point-item"><span class="point-bold">4. Signal &amp; Telecom (SMMS):</span> Co-schedules axle counter testing and point machine calibration into Mega Blocks.</li>
+        </ul>
+      </div>
+
+      <!-- 5. Operational Potential -->
+      <div class="section-block">
+        <div class="header-row">
+          <div class="header-icon">📊</div>
+          <div class="header-title">Operational Potential:</div>
+        </div>
+        <ul class="point-list">
+          <li class="point-item"><span class="point-bold">1. Availability Gain:</span> Elevates corridor asset availability from 91.2% to 96.6%+, unlocking new paths.</li>
+          <li class="point-item"><span class="point-bold">2. Downtime Compression:</span> Multi-department Shadow Blocks cut cumulative closures by up to 40%.</li>
+          <li class="point-item"><span class="point-bold">3. Punctuality Boost:</span> Eliminates cascading train detentions and unplanned speed restrictions.</li>
+          <li class="point-item"><span class="point-bold">4. Digital Governance:</span> 100% digital audit trail from maintenance requisition to final section clearance.</li>
+        </ul>
+      </div>
+
+      <!-- 6. Highlight Card: Supporting Facts -->
+      <div class="highlight-card">
+        <div class="card-header">
+          <span>⭐</span>
+          <span>Supporting Facts for Feasibility &amp; Viability</span>
+        </div>
+        <div class="card-point">
+          <strong>➔ CAG Railway Audit:</strong> Studies indicate up to <strong>30–35% of sanctioned blocks</strong> are underutilized due to decentralized manual coordination between departments.
+        </div>
+        <div class="card-point">
+          <strong>➔ Network Scale:</strong> Coordinates across <strong>68,000+ route km</strong> &amp; 13,000+ daily trains, recovering thousands of train delay hours annually.
+        </div>
+        <div class="card-point">
+          <strong>➔ Proven Benchmark:</strong> NDLS–ALJN pilot achieved <strong>100% critical task completion with 4 Mega Blocks</strong> in under 0.1 seconds.
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
