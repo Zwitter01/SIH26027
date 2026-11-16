@@ -2,114 +2,143 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Impact and Benefits of AI Block Planning</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
-      background: transparent !important;
+      background: #0b1120 !important; /* Dark Navy Background matching Master PPT */
       width: 1920px;
       height: 1080px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       overflow: hidden;
     }
 
-    .slide-container {
+    .slide-wrapper {
       width: 1920px;
       height: 1080px;
-      padding: 40px 60px;
+      padding: 40px 70px;
       display: flex;
-      gap: 60px;
-      background: transparent !important;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Slide Main Title */
+    .slide-title-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .slide-title {
+      font-size: 38px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .slide-container {
+      display: flex;
+      gap: 40px;
+      flex: 1;
     }
 
     .col-left {
       flex: 1.1;
       display: flex;
       flex-direction: column;
-      gap: 30px;
+      gap: 20px;
     }
 
     .col-right {
-      flex: 1;
+      flex: 1.2;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      justify-content: center;
+      gap: 14px;
+      justify-content: flex-start;
     }
 
-    /* Flowchart Hierarchy */
-    .flowchart-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      background: rgba(248, 250, 252, 0.6);
-      border: 1.5px dashed #94a3b8;
+    /* White Cards - High Contrast, Zero Blur */
+    .white-card {
+      background: #ffffff !important;
       border-radius: 16px;
-      padding: 20px 15px;
-    }
-
-    .root-node {
-      background: #fed7aa;
-      border: 2px solid #ea580c;
-      border-radius: 12px;
-      padding: 10px 24px;
-      font-size: 17px;
-      font-weight: 800;
-      color: #0f172a;
-      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.15);
-    }
-
-    .tree-row {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      width: 100%;
-    }
-
-    .tree-card {
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-size: 13.5px;
-      font-weight: 700;
-      color: #0f172a;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-
-    .card-blue   { background: #e0f2fe; border: 1.5px solid #0284c7; }
-    .card-red    { background: #ffe4e6; border: 1.5px solid #e11d48; }
-    .card-purple { background: #f3e8ff; border: 1.5px solid #9333ea; }
-    .card-yellow { background: #fef08a; border: 1.5px solid #ca8a04; }
-    .card-green  { background: #dcfce7; border: 1.5px solid #16a34a; }
-
-    /* Target Audience Section */
-    .audience-box {
+      padding: 18px 24px;
+      border: 1.5px solid #e2e8f0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .audience-title {
-      font-size: 20px;
+    /* Left Top Card */
+    .pillars-card {
+      border-color: #ea580c;
+    }
+
+    .card-title-orange {
+      font-size: 21px;
       font-weight: 800;
-      color: #0f172a;
+      color: #c2410c;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+    }
+
+    .pills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .pill {
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .pill-blue   { background: #e0f2fe; color: #0369a1; border: 1.5px solid #38bdf8; }
+    .pill-red    { background: #ffe4e6; color: #be123c; border: 1.5px solid #fb7185; }
+    .pill-purple { background: #f3e8ff; color: #7e22ce; border: 1.5px solid #c084fc; }
+    .pill-yellow { background: #fef08a; color: #854d0e; border: 1.5px solid #facc15; }
+    .pill-green  { background: #dcfce7; color: #15803d; border: 1.5px solid #4ade80; }
+
+    .pillars-desc {
+      font-size: 14.5px;
+      line-height: 1.45;
+      color: #475569;
+      margin-top: 4px;
+    }
+
+    /* Left Bottom Card: Target Audience (PREVIOUSLY INVISIBLE DARK BLUE!) */
+    .audience-card {
+      border-color: #0284c7;
+      flex: 1;
+    }
+
+    .audience-title {
+      font-size: 21px;
+      font-weight: 800;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .audience-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .audience-item {
-      font-size: 14.5px;
-      line-height: 1.4;
+      font-size: 15px;
+      line-height: 1.42;
       color: #334155;
     }
 
@@ -118,109 +147,155 @@
       color: #0f172a;
     }
 
-    /* Right Column Dimension List */
-    .dim-card {
+    /* Right Side 5 Cards */
+    .metric-card {
+      background: #ffffff !important;
+      border-radius: 14px;
+      padding: 14px 20px;
+      border: 1.5px solid #e2e8f0;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      background: #ffffff;
-      border-left: 4px solid #0284c7;
-      border-radius: 0 8px 8px 0;
-      padding: 10px 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      gap: 6px;
     }
 
-    .dim-title {
-      font-size: 16px;
+    .metric-header {
+      font-size: 17px;
       font-weight: 800;
-      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .dim-bullet {
-      font-size: 13.5px;
-      color: #475569;
-      line-height: 1.35;
+    .header-blue   { color: #0284c7; }
+    .header-red    { color: #e11d48; }
+    .header-purple { color: #9333ea; }
+    .header-yellow { color: #ca8a04; }
+    .header-green  { color: #16a34a; }
+
+    .metric-point {
+      font-size: 14.2px;
+      line-height: 1.4;
+      color: #334155;
+      padding-left: 6px;
     }
+
+    .card-border-blue   { border-color: #bae6fd; }
+    .card-border-red    { border-color: #fecdd3; }
+    .card-border-purple { border-color: #e9d5ff; }
+    .card-border-yellow { border-color: #fef08a; }
+    .card-border-green  { border-color: #bbf7d0; }
   </style>
 </head>
 <body>
 
-  <div class="slide-container">
-    
-    <!-- LEFT COLUMN: FLOWCHART + TARGET AUDIENCE -->
-    <div class="col-left">
-      
-      <!-- Hierarchy Tree / Flowchart of Benefits -->
-      <div class="flowchart-wrapper">
-        <div class="root-node">🚆 Benefits of AI Block Planning</div>
+  <div class="slide-wrapper">
+    <!-- TITLE -->
+    <div class="slide-title-bar">
+      <h1 class="slide-title">🎯 Impact and Benefits of AI Block Planning</h1>
+    </div>
+
+    <div class="slide-container">
+      <!-- LEFT COLUMN -->
+      <div class="col-left">
         
-        <!-- Row 1: Operational, Economical, Technological -->
-        <div class="tree-row">
-          <div class="tree-card card-blue">⚙️ Operational</div>
-          <div class="tree-card card-red">💰 Economical</div>
-          <div class="tree-card card-purple">⚡ Technological</div>
+        <!-- 1. Top Card: 5 Pillars -->
+        <div class="white-card pillars-card">
+          <div class="card-title-orange">
+            <span>🚆</span>
+            <span>Benefits of AI Block Planning</span>
+          </div>
+          <div class="pills-container">
+            <span class="pill pill-blue">🔵 Operational</span>
+            <span class="pill pill-red">🔺 Economical</span>
+            <span class="pill pill-purple">⚡ Technological</span>
+            <span class="pill pill-yellow">🛡️ Safety &amp; Social</span>
+            <span class="pill pill-green">🌿 Environmental</span>
+          </div>
+          <p class="pillars-desc">
+            Delivers unified multi-dimensional returns across corridor asset availability, track worker safety, locomotive fuel savings, and punctuality assurance.
+          </p>
         </div>
 
-        <!-- Row 2: Safety & Social, Environmental -->
-        <div class="tree-row">
-          <div class="tree-card card-yellow">🛡️ Safety &amp; Social</div>
-          <div class="tree-card card-green">🌱 Environmental</div>
+        <!-- 2. Bottom Card: Target Audience (High Contrast White Card!) -->
+        <div class="white-card audience-card">
+          <div class="audience-title">
+            <span>👥</span>
+            <span>Potential Impact on the Target Audience:</span>
+          </div>
+          <ul class="audience-list">
+            <li class="audience-item">
+              <span class="audience-bold">• Section Controllers:</span> 1-click automated corridor block plans replacing 3–5 days of chaotic manual phone calls.
+            </li>
+            <li class="audience-item">
+              <span class="audience-bold">• Maintenance Field Staff:</span> Guaranteed synchronized Mega Blocks with zero last-minute cancellations or gang idle time.
+            </li>
+            <li class="audience-item">
+              <span class="audience-bold">• Passenger Operations:</span> Zero delay for Rajdhani / Vande Bharat trains via strict 15-min statutory headway buffers.
+            </li>
+            <li class="audience-item">
+              <span class="audience-bold">• Freight Operations:</span> Frees dedicated nocturnal track paths, accelerating goods rake turnaround and revenue.
+            </li>
+          </ul>
         </div>
+
       </div>
 
-      <!-- Potential Impact on Target Audience -->
-      <div class="audience-box">
-        <div class="audience-title">❖ Potential Impact on the Target Audience:</div>
-        <ul class="audience-list">
-          <li class="audience-item"><span class="audience-bold">• Section Controllers:</span> 1-click automated corridor block plans replacing 3–5 days of manual phone calls.</li>
-          <li class="audience-item"><span class="audience-bold">• Maintenance Field Staff:</span> Guaranteed synchronized Mega Blocks with zero last-minute cancellations.</li>
-          <li class="audience-item"><span class="audience-bold">• Passenger Operations:</span> Zero delay for Rajdhani / Vande Bharat trains via strict 15-min headway buffers.</li>
-          <li class="audience-item"><span class="audience-bold">• Freight Operations:</span> Frees dedicated nocturnal track paths, boosting goods rake turnaround time.</li>
-        </ul>
-      </div>
+      <!-- RIGHT COLUMN: 5 Full-Width White Cards -->
+      <div class="col-right">
 
+        <!-- 1. Operational -->
+        <div class="metric-card card-border-blue">
+          <div class="metric-header header-blue">
+            <span>🔵</span>
+            <span>Operational:</span>
+          </div>
+          <div class="metric-point">• Increases corridor asset availability from 91.2% to 96.6%+.</div>
+          <div class="metric-point">• Multi-department Shadow Blocks cut cumulative track closures by up to 40%.</div>
+        </div>
+
+        <!-- 2. Economical -->
+        <div class="metric-card card-border-red">
+          <div class="metric-header header-red">
+            <span>🔺</span>
+            <span>Economical:</span>
+          </div>
+          <div class="metric-point">• Saves crores annually by eliminating locomotive idling fuel and overtime gang hours.</div>
+          <div class="metric-point">• Accelerates freight rake turnaround, boosting network freight revenue paths.</div>
+        </div>
+
+        <!-- 3. Technological -->
+        <div class="metric-card card-border-purple">
+          <div class="metric-header header-purple">
+            <span>⚡</span>
+            <span>Technological:</span>
+          </div>
+          <div class="metric-point">• Pioneers Google OR-Tools CP-SAT optimization within Indian Railways CRIS systems.</div>
+          <div class="metric-point">• Sub-100ms algorithmic latency enables live What-If constraint recalculations.</div>
+        </div>
+
+        <!-- 4. Safety & Social -->
+        <div class="metric-card card-border-yellow">
+          <div class="metric-header header-yellow">
+            <span>🛡️</span>
+            <span>Safety &amp; Social:</span>
+          </div>
+          <div class="metric-point">• Prioritizes urgent IMR/OBS rail flaws and OHE defects to prevent derailments.</div>
+          <div class="metric-point">• Eliminates unexpected passenger train detentions at outer signals.</div>
+        </div>
+
+        <!-- 5. Environmental -->
+        <div class="metric-card card-border-green">
+          <div class="metric-header header-green">
+            <span>🌿</span>
+            <span>Environmental:</span>
+          </div>
+          <div class="metric-point">• Reduces diesel locomotive idling at red signals, cutting direct CO2 emissions.</div>
+          <div class="metric-point">• Optimizes train momentum, lowering traction power peak surge demands.</div>
+        </div>
+
+      </div>
     </div>
-
-    <!-- RIGHT COLUMN: DETAILED 5 DIMENSIONS -->
-    <div class="col-right">
-      
-      <!-- 1. Operational -->
-      <div class="dim-card" style="border-left-color: #0284c7;">
-        <div class="dim-title">⚙️ Operational:</div>
-        <div class="dim-bullet">• Increases corridor asset availability from 91.2% to 96.6%+.</div>
-        <div class="dim-bullet">• Multi-department Shadow Blocks cut cumulative track closures by up to 40%.</div>
-      </div>
-
-      <!-- 2. Economical -->
-      <div class="dim-card" style="border-left-color: #e11d48;">
-        <div class="dim-title">💰 Economical:</div>
-        <div class="dim-bullet">• Saves crores annually by eliminating locomotive idling fuel and overtime gang hours.</div>
-        <div class="dim-bullet">• Accelerates freight rake turnaround, boosting network freight revenue paths.</div>
-      </div>
-
-      <!-- 3. Technological -->
-      <div class="dim-card" style="border-left-color: #9333ea;">
-        <div class="dim-title">⚡ Technological:</div>
-        <div class="dim-bullet">• Pioneers Google OR-Tools CP-SAT optimization within Indian Railways CRIS systems.</div>
-        <div class="dim-bullet">• Sub-100ms algorithmic latency enables live What-If constraint recalculations.</div>
-      </div>
-
-      <!-- 4. Safety & Social -->
-      <div class="dim-card" style="border-left-color: #ca8a04;">
-        <div class="dim-title">🛡️ Safety &amp; Social:</div>
-        <div class="dim-bullet">• Prioritizes urgent IMR/OBS rail flaws and OHE defects to prevent derailments.</div>
-        <div class="dim-bullet">• Eliminates unexpected passenger train detentions at outer signals.</div>
-      </div>
-
-      <!-- 5. Environmental -->
-      <div class="dim-card" style="border-left-color: #16a34a;">
-        <div class="dim-title">🌱 Environmental:</div>
-        <div class="dim-bullet">• Reduces diesel locomotive idling at red signals, cutting direct CO2 emissions.</div>
-        <div class="dim-bullet">• Optimizes train momentum, lowering traction power peak surge demands.</div>
-      </div>
-
-    </div>
-
   </div>
 
 </body>

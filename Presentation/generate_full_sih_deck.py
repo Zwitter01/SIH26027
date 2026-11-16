@@ -120,83 +120,100 @@ def create_full_sih_deck():
             p_l = tf.add_paragraph(); p_l.text = line; p_l.font.size = Pt(10); p_l.font.color.rgb = TEXT_DARK; p_l.space_after = Pt(1)
 
     # =========================================================================
-    # SLIDE 5: FEASIBILITY AND VIABILITY
+    # SLIDE 5: FEASIBILITY AND VIABILITY (HIGH-CONTRAST WHITE CARDS)
     # =========================================================================
     slide5 = prs.slides.add_slide(blank_layout)
     t_box = slide5.shapes.add_textbox(Inches(0.8), Inches(0.4), Inches(11.7), Inches(0.7))
     p = t_box.text_frame.paragraphs[0]; p.text = "FEASIBILITY AND VIABILITY"; p.font.size = Pt(26); p.font.bold = True; p.font.color.rgb = DARK_BLUE
 
-    # Left Column
-    left_box = slide5.shapes.add_textbox(Inches(0.8), Inches(1.2), Inches(5.6), Inches(5.8))
-    tf_l = left_box.text_frame; tf_l.word_wrap = True; tf_l.margin_left = tf_l.margin_right = tf_l.margin_top = 0
-    p = tf_l.paragraphs[0]; p.text = "⚖️ Feasibility:"; p.font.size = Pt(15); p.font.bold = True; p.font.color.rgb = DARK_BLUE; p.space_after = Pt(3)
+    def create_white_card(slide, x, y, w, h, border_col):
+        c = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, x, y, w, h)
+        c.fill.solid(); c.fill.fore_color.rgb = RGBColor(255, 255, 255)
+        c.line.color.rgb = border_col; c.line.width = Pt(1.5)
+        return c
+
+    # Left Column (X=0.8, W=5.7)
+    # 1. Feasibility Card
+    c1 = create_white_card(slide5, Inches(0.8), Inches(1.2), Inches(5.7), Inches(1.85), NAVY_ACCENT)
+    tf1 = c1.text_frame; tf1.word_wrap = True; tf1.margin_left = tf1.margin_right = Inches(0.18); tf1.margin_top = Inches(0.1)
+    p = tf1.paragraphs[0]; p.text = "⚖️ Feasibility:"; p.font.size = Pt(13); p.font.bold = True; p.font.color.rgb = NAVY_ACCENT; p.space_after = Pt(2)
     for b, n in [
         ("1. Technical: ", "Google OR-Tools CP-SAT solver solves complete corridor plan in <0.06s."),
         ("2. Modular: ", "Layered architecture enables phased rollout from single division to national scale."),
         ("3. Integration: ", "Non-invasive REST webhooks connect to existing CRIS, TMS, SMMS, and COA servers."),
         ("4. Economic: ", "Zero specialized hardware required; runs on existing railway servers.")
     ]:
-        p_pt = tf_l.add_paragraph(); p_pt.space_after = Pt(2)
-        rb = p_pt.add_run(); rb.text = b; rb.font.bold = True; rb.font.size = Pt(10.5); rb.font.color.rgb = DARK_BLUE
-        rn = p_pt.add_run(); rn.text = n; rn.font.size = Pt(10.5); rn.font.color.rgb = TEXT_DARK
+        p_pt = tf1.add_paragraph(); p_pt.space_after = Pt(2)
+        rb = p_pt.add_run(); rb.text = b; rb.font.bold = True; rb.font.size = Pt(9.8); rb.font.color.rgb = DARK_BLUE
+        rn = p_pt.add_run(); rn.text = n; rn.font.size = Pt(9.5); rn.font.color.rgb = TEXT_DARK
 
-    p_v = tf_l.add_paragraph(); p_v.space_before = Pt(6); p_v.text = "⚙️ Viability:"; p_v.font.size = Pt(15); p_v.font.bold = True; p_v.font.color.rgb = DARK_BLUE; p_v.space_after = Pt(3)
+    # 2. Viability Card
+    c2 = create_white_card(slide5, Inches(0.8), Inches(3.15), Inches(5.7), Inches(1.85), NAVY_ACCENT)
+    tf2 = c2.text_frame; tf2.word_wrap = True; tf2.margin_left = tf2.margin_right = Inches(0.18); tf2.margin_top = Inches(0.1)
+    p = tf2.paragraphs[0]; p.text = "⚙️ Viability:"; p.font.size = Pt(13); p.font.bold = True; p.font.color.rgb = NAVY_ACCENT; p.space_after = Pt(2)
     for b, n in [
         ("1. Compliance: ", "Built strictly around Indian Railways G&SR Rules and Block Manuals."),
         ("2. Standardized PTW: ", "Auto-generates statutory Form 351 Joint Disconnection Notices."),
         ("3. Scalability: ", "Extensible across all 17 Zonal Railways and 68,000+ route kilometers."),
         ("4. Safety: ", "Mathematical proof of zero train-block collision eliminates human error.")
     ]:
-        p_pt = tf_l.add_paragraph(); p_pt.space_after = Pt(2)
-        rb = p_pt.add_run(); rb.text = b; rb.font.bold = True; rb.font.size = Pt(10.5); rb.font.color.rgb = DARK_BLUE
-        rn = p_pt.add_run(); rn.text = n; rn.font.size = Pt(10.5); rn.font.color.rgb = TEXT_DARK
+        p_pt = tf2.add_paragraph(); p_pt.space_after = Pt(2)
+        rb = p_pt.add_run(); rb.text = b; rb.font.bold = True; rb.font.size = Pt(9.8); rb.font.color.rgb = DARK_BLUE
+        rn = p_pt.add_run(); rn.text = n; rn.font.size = Pt(9.5); rn.font.color.rgb = TEXT_DARK
 
-    p_c = tf_l.add_paragraph(); p_c.space_before = Pt(6); p_c.text = "⚠️ Challenges & Mitigations:"; p_c.font.size = Pt(15); p_c.font.bold = True; p_c.font.color.rgb = DARK_BLUE; p_c.space_after = Pt(3)
+    # 3. Challenges Card
+    c3 = create_white_card(slide5, Inches(0.8), Inches(5.1), Inches(5.7), Inches(1.85), RGBColor(217, 119, 6))
+    tf3 = c3.text_frame; tf3.word_wrap = True; tf3.margin_left = tf3.margin_right = Inches(0.18); tf3.margin_top = Inches(0.1)
+    p = tf3.paragraphs[0]; p.text = "⚠️ Challenges & Mitigations:"; p.font.size = Pt(13); p.font.bold = True; p.font.color.rgb = RGBColor(180, 83, 9); p.space_after = Pt(2)
     for b, n in [
         ("1. Data Latency: ", "Pydantic schemas sanitize timestamps, chainage markers, and defect logs."),
         ("2. Machine Conflicts: ", "NoOverlap logic prevents double-booking Track Machines & Tower Wagons."),
         ("3. Emergency Flares: ", "Dynamic What-If engine recalculates optimal bypass schedules in <150ms.")
     ]:
-        p_pt = tf_l.add_paragraph(); p_pt.space_after = Pt(2)
-        rb = p_pt.add_run(); rb.text = b; rb.font.bold = True; rb.font.size = Pt(10.5); rb.font.color.rgb = DARK_BLUE
-        rn = p_pt.add_run(); rn.text = n; rn.font.size = Pt(10.5); rn.font.color.rgb = TEXT_DARK
+        p_pt = tf3.add_paragraph(); p_pt.space_after = Pt(2)
+        rb = p_pt.add_run(); rb.text = b; rb.font.bold = True; rb.font.size = Pt(9.8); rb.font.color.rgb = DARK_BLUE
+        rn = p_pt.add_run(); rn.text = n; rn.font.size = Pt(9.5); rn.font.color.rgb = TEXT_DARK
 
-    # Right Column
-    right_box = slide5.shapes.add_textbox(Inches(6.8), Inches(1.2), Inches(5.7), Inches(3.6))
-    tf_r = right_box.text_frame; tf_r.word_wrap = True; tf_r.margin_left = tf_r.margin_right = tf_r.margin_top = 0
-    p = tf_r.paragraphs[0]; p.text = "🚆 Use Cases:"; p.font.size = Pt(15); p.font.bold = True; p.font.color.rgb = DARK_BLUE; p.space_after = Pt(3)
+    # Right Column (X=6.8, W=5.7)
+    # 4. Use Cases Card
+    c4 = create_white_card(slide5, Inches(6.8), Inches(1.2), Inches(5.7), Inches(1.85), NAVY_ACCENT)
+    tf4 = c4.text_frame; tf4.word_wrap = True; tf4.margin_left = tf4.margin_right = Inches(0.18); tf4.margin_top = Inches(0.1)
+    p = tf4.paragraphs[0]; p.text = "🚆 Use Cases:"; p.font.size = Pt(13); p.font.bold = True; p.font.color.rgb = NAVY_ACCENT; p.space_after = Pt(2)
     for b, n in [
         ("1. Section Controllers: ", "Automated corridor block windows without manual phone calls."),
         ("2. Civil/P-Way (TMS): ", "Prioritizes urgent IMR rail flaw welds & deep screening tamping blocks."),
         ("3. Traction (TDMS): ", "Synchronizes OHE cantilever overhauls & power isolation with track work."),
         ("4. S&T (SMMS): ", "Co-schedules axle counter calibration and point machine maintenance.")
     ]:
-        p_pt = tf_r.add_paragraph(); p_pt.space_after = Pt(2)
-        rb = p_pt.add_run(); rb.text = b; rb.font.bold = True; rb.font.size = Pt(10.5); rb.font.color.rgb = DARK_BLUE
-        rn = p_pt.add_run(); rn.text = n; rn.font.size = Pt(10.5); rn.font.color.rgb = TEXT_DARK
+        p_pt = tf4.add_paragraph(); p_pt.space_after = Pt(2)
+        rb = p_pt.add_run(); rb.text = b; rb.font.bold = True; rb.font.size = Pt(9.8); rb.font.color.rgb = DARK_BLUE
+        rn = p_pt.add_run(); rn.text = n; rn.font.size = Pt(9.5); rn.font.color.rgb = TEXT_DARK
 
-    p_op = tf_r.add_paragraph(); p_op.space_before = Pt(6); p_op.text = "📊 Operational Potential:"; p_op.font.size = Pt(15); p_op.font.bold = True; p_op.font.color.rgb = DARK_BLUE; p_op.space_after = Pt(3)
+    # 5. Operational Potential Card
+    c5 = create_white_card(slide5, Inches(6.8), Inches(3.15), Inches(5.7), Inches(1.85), RGBColor(22, 163, 74))
+    tf5 = c5.text_frame; tf5.word_wrap = True; tf5.margin_left = tf5.margin_right = Inches(0.18); tf5.margin_top = Inches(0.1)
+    p = tf5.paragraphs[0]; p.text = "📊 Operational Potential:"; p.font.size = Pt(13); p.font.bold = True; p.font.color.rgb = RGBColor(21, 128, 61); p.space_after = Pt(2)
     for b, n in [
         ("1. Availability Gain: ", "Elevates corridor asset availability from 91.2% to 96.6%+."),
         ("2. Downtime Cut: ", "Multi-department Shadow Blocks cut cumulative closures by up to 40%."),
         ("3. Punctuality Boost: ", "Eliminates cascading train detentions and emergency speed restrictions."),
         ("4. Digital Audit: ", "100% digital audit trail from requisition to track clearance.")
     ]:
-        p_pt = tf_r.add_paragraph(); p_pt.space_after = Pt(2)
-        rb = p_pt.add_run(); rb.text = b; rb.font.bold = True; rb.font.size = Pt(10.5); rb.font.color.rgb = DARK_BLUE
-        rn = p_pt.add_run(); rn.text = n; rn.font.size = Pt(10.5); rn.font.color.rgb = TEXT_DARK
+        p_pt = tf5.add_paragraph(); p_pt.space_after = Pt(2)
+        rb = p_pt.add_run(); rb.text = b; rb.font.bold = True; rb.font.size = Pt(9.8); rb.font.color.rgb = DARK_BLUE
+        rn = p_pt.add_run(); rn.text = n; rn.font.size = Pt(9.5); rn.font.color.rgb = TEXT_DARK
 
-    # Bottom Right Highlight Box
-    card_shape = slide5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(4.9), Inches(5.7), Inches(2.1))
-    card_shape.fill.solid(); card_shape.fill.fore_color.rgb = RGBColor(240, 249, 255); card_shape.line.color.rgb = NAVY_ACCENT; card_shape.line.width = Pt(1.5)
-    tf_c = card_shape.text_frame; tf_c.word_wrap = True; tf_c.margin_left = tf_c.margin_right = tf_c.margin_top = Inches(0.12)
-    p = tf_c.paragraphs[0]; p.text = "⭐ Supporting Facts for Feasibility & Viability"; p.font.size = Pt(12); p.font.bold = True; p.font.color.rgb = NAVY_ACCENT; p.space_after = Pt(3)
+    # 6. Bottom Right Highlight Box
+    c6 = create_white_card(slide5, Inches(6.8), Inches(5.1), Inches(5.7), Inches(1.85), RGBColor(14, 165, 233))
+    c6.line.width = Pt(2.0)
+    tf6 = c6.text_frame; tf6.word_wrap = True; tf6.margin_left = tf6.margin_right = Inches(0.18); tf6.margin_top = Inches(0.1)
+    p = tf6.paragraphs[0]; p.text = "⭐ Supporting Facts for Feasibility & Viability"; p.font.size = Pt(12); p.font.bold = True; p.font.color.rgb = NAVY_ACCENT; p.space_after = Pt(2)
     for cp in [
         "➔ CAG Railway Audit: 30–35% of sanctioned blocks underutilized due to manual coordination.",
         "➔ Network Scale: Coordinates across 68,000+ route km & 13,000+ trains, recovering delay hours.",
         "➔ Proven Benchmark: NDLS–ALJN pilot achieved 100% completion with 4 Mega Blocks in <0.1s."
     ]:
-        p_pt = tf_c.add_paragraph(); p_pt.text = cp; p_pt.font.size = Pt(9.5); p_pt.font.color.rgb = TEXT_DARK; p_pt.space_after = Pt(2)
+        p_pt = tf6.add_paragraph(); p_pt.text = cp; p_pt.font.size = Pt(9.3); p_pt.font.color.rgb = TEXT_DARK; p_pt.space_after = Pt(2)
 
     # =========================================================================
     # SLIDE 6: RESEARCH AND REFERENCES (MATCHING SAARTHI WINNING FORMAT)
